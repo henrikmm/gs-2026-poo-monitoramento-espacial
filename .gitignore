@@ -1,0 +1,38 @@
+# ============================================================
+# Arquivos Java NAO essenciais (gerados na compilacao)
+# ============================================================
+
+# Bytecode compilado - gerado por javac, nao deve ser versionado
+*.class
+
+# Pastas de build
+bin/
+build/
+out/
+target/
+
+# ============================================================
+# Metadados de IDE
+# ============================================================
+
+# Eclipse
+.project
+.classpath
+.settings/
+
+# IntelliJ IDEA
+.idea/
+*.iml
+
+# VS Code
+.vscode/
+
+# NetBeans
+nbproject/
+
+# ============================================================
+# Sistema operacional / diversos
+# ============================================================
+*.log
+Thumbs.db
+.DS_Store
