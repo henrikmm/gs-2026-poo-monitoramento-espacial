@@ -4,26 +4,28 @@
  * ============================================================================
  */
 
+package br.com.fiap.gs.model;
+
 import java.util.Random;
 
-/** Sensor de pressao. Leitura simulada na faixa de 0 a 300 kPa. */
-public class SensorPressao extends ComponenteEspacial implements Sensor {
+/** Sensor de radiacao. Leitura simulada na faixa de 0 a 10 mSv. */
+public class SensorRadiacao extends ComponenteEspacial implements Sensor {
 
     private double limiteAlerta;
     private double ultimaLeitura;
     private final Random random = new Random();
-    private static final String UNIDADE = "kPa";
+    private static final String UNIDADE = "mSv";
 
-    public SensorPressao(int id, String nome) {
+    public SensorRadiacao(int id, String nome) {
         super(id, nome);
-        this.limiteAlerta = 200.0; // limite padrao de pressao
+        this.limiteAlerta = 5.0; // limite padrao de radiacao
     }
 
     @Override
     public double lerValor() {
-        // Simula uma leitura entre 0 e 300 kPa.
-        ultimaLeitura = random.nextDouble() * 300.0;
-        ultimaLeitura = Math.round(ultimaLeitura * 10.0) / 10.0;
+        // Simula uma leitura entre 0 e 10 mSv.
+        ultimaLeitura = random.nextDouble() * 10.0;
+        ultimaLeitura = Math.round(ultimaLeitura * 100.0) / 100.0;
         return ultimaLeitura;
     }
 
@@ -34,7 +36,7 @@ public class SensorPressao extends ComponenteEspacial implements Sensor {
 
     @Override
     public String retornarTipo() {
-        return "Sensor de Pressao";
+        return "Sensor de Radiacao";
     }
 
     @Override
@@ -47,7 +49,7 @@ public class SensorPressao extends ComponenteEspacial implements Sensor {
         if (limite > 0) {
             this.limiteAlerta = limite;
         } else {
-            System.out.println("!! Limite invalido para pressao (deve ser > 0).");
+            System.out.println("!! Limite invalido para radiacao (deve ser > 0).");
         }
     }
 
@@ -64,7 +66,7 @@ public class SensorPressao extends ComponenteEspacial implements Sensor {
     @Override
     public String gerarRelatorio() {
         return String.format(
-                "[%s] %s | Leitura: %.1f %s | Limite: %.1f %s | Status: %s",
+                "[%s] %s | Leitura: %.2f %s | Limite: %.2f %s | Status: %s",
                 retornarTipo(), nome, ultimaLeitura, UNIDADE, limiteAlerta, UNIDADE,
                 (ligado ? "LIGADO" : "DESLIGADO"));
     }

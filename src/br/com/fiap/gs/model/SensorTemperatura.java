@@ -9,6 +9,8 @@
  * ============================================================================
  */
 
+package br.com.fiap.gs.model;
+
 import java.util.Random;
 
 /** Sensor de temperatura. Leitura simulada na faixa de -20 C a 120 C. */

@@ -1,12 +1,27 @@
 /*
- * Classe PRINCIPAL: contem o metodo main, o menu interativo, o loop principal
+ * Classe PRINCIPAL: contem o menu interativo, o loop principal
  * e o motor de alertas. Amarra todos os conceitos:
  *   - CLASSE ABSTRATA: trata sensores e propulsores como ComponenteEspacial
  *   - INTERFACE: usa o contrato Sensor para ler valores e detectar limites
  *   - ENCAPSULAMENTO: acessa DadosMissao apenas pelos metodos validados
  *   - HERANCA + POLIMORFISMO: acelerar()/gerarRelatorio() variam por tipo
+ *
+ * O metodo main() esta em Main.java (pacote .main), aqui fica apenas
+ * a logica de aplicacao.
  * ============================================================================
  */
+
+package br.com.fiap.gs.main;
+
+import br.com.fiap.gs.model.ComponenteEspacial;
+import br.com.fiap.gs.model.DadosMissao;
+import br.com.fiap.gs.model.PropulsaoEletrica;
+import br.com.fiap.gs.model.PropulsaoQuimica;
+import br.com.fiap.gs.model.Sensor;
+import br.com.fiap.gs.model.SensorPressao;
+import br.com.fiap.gs.model.SensorRadiacao;
+import br.com.fiap.gs.model.SensorTemperatura;
+import br.com.fiap.gs.model.SistemaPropulsao;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,10 +36,6 @@ public class SistemaMonitoramento {
     private DadosMissao dadosMissao;
 
     private final Scanner sc = new Scanner(System.in);
-
-    public static void main(String[] args) {
-        new SistemaMonitoramento().iniciar();
-    }
 
     /** Configura os componentes e roda o loop principal do programa. */
     public void iniciar() {
@@ -83,9 +94,12 @@ public class SistemaMonitoramento {
         }
     }
 
-    private void registrarSensor(Sensor s) {
+    // Generico com limite duplo: so aceita algo que seja, ao mesmo tempo,
+    // ComponenteEspacial E Sensor. Com isso o compilador garante o vinculo e
+    // dispensa qualquer cast (sem risco de ClassCastException em tempo de execucao).
+    private <T extends ComponenteEspacial & Sensor> void registrarSensor(T s) {
         sensores.add(s);
-        componentes.add((ComponenteEspacial) s); // todo sensor tambem e componente
+        componentes.add(s); // todo sensor tambem e componente (garantido pelo tipo)
     }
 
     private void registrarPropulsor(SistemaPropulsao p) {
@@ -283,7 +297,7 @@ public class SistemaMonitoramento {
         double limite = s.getLimiteAlerta();
         if (leitura >= limite * 1.3) {
             return "CRITICO";
-        } else if (leitura >= limite) {
+        } else if (s.acimaDoLimite()) { // usa o metodo DEFAULT do contrato Sensor
             return "ALERTA";
         } else if (leitura >= limite * 0.9) {
             return "ATENCAO";

@@ -7,6 +7,8 @@
  * ============================================================================
  */
 
+package br.com.fiap.gs.model;
+
 /** Motor de propulsao eletrica/ionica. */
 public class PropulsaoEletrica extends SistemaPropulsao {
 

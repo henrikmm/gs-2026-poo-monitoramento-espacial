@@ -8,6 +8,8 @@
  * ============================================================================
  */
 
+package br.com.fiap.gs.model;
+
 /**
  * Classe abstrata que representa qualquer componente da estacao espacial.
  * Define atributos e comportamentos comuns (ligar/desligar) e obriga as

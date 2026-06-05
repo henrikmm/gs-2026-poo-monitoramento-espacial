@@ -8,6 +8,8 @@
  * ============================================================================
  */
 
+package br.com.fiap.gs.model;
+
 /** Guarda e protege os dados sensiveis da missao. */
 public class DadosMissao {
 

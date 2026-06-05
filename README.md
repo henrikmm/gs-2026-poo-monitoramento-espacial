@@ -31,10 +31,8 @@ acompanha sensores, controla os motores, gerencia os dados da missão e o sistem
   em tempo de execução pelo menu.
 - **Menu interativo** em texto, com loop principal, para acessar tudo isso.
 
-> Não há interface gráfica (não é necessária) e os valores dos sensores são
-> simulados, conforme permitido pelo enunciado.
 
-## 📸 Demonstração
+##  Demonstração
 
 **1. Inicialização e menu principal** — todos os componentes são ligados e o
 menu interativo é exibido:
@@ -54,22 +52,25 @@ nível** (note o `ALERTA` no sensor de radiação acima do limite):
 
 ## Onde está o `main` / onde testar
 
-O arquivo principal é **`SistemaMonitoramento.java`** — é nele que está o método
-`main` e o menu. **Execute esse arquivo para testar todo o sistema.**
+O ponto de entrada é **`Main.java`** (pacote `br.com.fiap.gs.main`) — ele apenas
+inicia o sistema. Toda a lógica de aplicação (menu, loop principal e motor de
+alertas) está em **`SistemaMonitoramento.java`**, no mesmo pacote.
+**Execute `Main` para testar todo o sistema.**
 
 ### Como compilar e rodar (terminal)
 
-A partir da pasta `Entrega/`:
+O código está organizado em pacotes dentro de `src/`. A partir da pasta
+`src/`:
 
 ```bash
-javac *.java
-java SistemaMonitoramento
+javac br/com/fiap/gs/model/*.java br/com/fiap/gs/main/*.java
+java br.com.fiap.gs.main.Main
 ```
 
 ### Como rodar em uma IDE (Eclipse, IntelliJ, VS Code, NetBeans, BlueJ)
 
-1. Importe/abra a pasta `Entrega` como projeto Java.
-2. Localize a classe **`SistemaMonitoramento`**.
+1. Importe/abra a pasta `src` como projeto Java.
+2. Localize a classe **`Main`** (pacote `br.com.fiap.gs.main`).
 3. Clique em **Run** (ela contém o `main`).
 
 ### Roteiro rápido de teste
@@ -99,7 +100,37 @@ java SistemaMonitoramento
 | `SistemaPropulsao.java` | **Herança** (classe abstrata base dos motores) |
 | `PropulsaoQuimica.java` | Herança + `super()` + sobrescrita de `acelerar()` |
 | `PropulsaoEletrica.java` | Herança + `super()` + sobrescrita de `acelerar()` |
-| `SistemaMonitoramento.java` | Classe **principal**: `main`, menu, loop e motor de alertas |
+| `SistemaMonitoramento.java` | Classe **orquestradora**: menu, loop principal e motor de alertas |
+| `Main.java` | **Ponto de entrada** (`main`): apenas inicia o `SistemaMonitoramento` |
+
+### Diagrama de classes
+
+![Diagrama de classes](Imagens/Class%20Diagram2.png)
+
+O diagrama deixa visível como os conceitos se amarram em um único desenho:
+
+- **Herança (generalização):** a seta de triângulo vazado vai de
+  `SistemaPropulsao` para `ComponenteEspacial` (`SistemaPropulsao **é um**
+  ComponenteEspacial). Os atributos `#` (protected) de `ComponenteEspacial`
+  ficam disponíveis para as subclasses, e os métodos em *itálico*
+  (`gerarRelatorio()`, `calcularEmpuxo()`) são os **abstratos** que as classes
+  concretas obrigatoriamente implementam.
+- **Interface (realização):** `Sensor` aparece com o estereótipo
+  `<<interface>>` e todos os métodos em itálico — é só o contrato, sem
+  implementação (exceto o `default acimaDoLimite()`).
+- **Associação/composição:** a partir de `SistemaMonitoramento` saem as ligações
+  para tudo o que ele coordena — `1` `DadosMissao`, e as três coleções `*`
+  (`componentes`, `sensores`, `propulsores`, marcadas como `{ordered}` por serem
+  listas), além do `Scanner` (`sc`) usado para ler o teclado. É esse objeto que
+  segura o sistema inteiro junto.
+- **Encapsulamento:** repare que em `DadosMissao` **todos os atributos são `-`
+  (privados)** e o acesso passa por getters/setters — inclusive `autenticar()`,
+  privado, que protege as coordenadas por código.
+
+As classes concretas de sensor (`SensorTemperatura`, `SensorPressao`,
+`SensorRadiacao`) e de propulsão (`PropulsaoQuimica`, `PropulsaoEletrica`) foram
+omitidas do diagrama para mantê-lo legível: cada uma simplesmente
+`extends ComponenteEspacial` e, no caso dos sensores, `implements Sensor`.
 
 ### Como tudo se conecta
 

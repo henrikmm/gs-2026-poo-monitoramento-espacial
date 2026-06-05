@@ -8,6 +8,8 @@
  * ============================================================================
  */
 
+package br.com.fiap.gs.model;
+
 /** Classe abstrata base para todos os sistemas de propulsao. */
 public abstract class SistemaPropulsao extends ComponenteEspacial {
 

@@ -7,6 +7,8 @@
  * ============================================================================
  */
 
+package br.com.fiap.gs.model;
+
 /** Motor de propulsao quimica (queima de combustivel). */
 public class PropulsaoQuimica extends SistemaPropulsao {
 

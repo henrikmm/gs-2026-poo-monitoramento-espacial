@@ -8,6 +8,8 @@
  * ============================================================================
  */
 
+package br.com.fiap.gs.model;
+
 /**
  * Contrato comum a todos os sensores da estacao.
  */
@@ -35,11 +37,11 @@ public interface Sensor {
     String getUnidade();
 
     /**
-     * Metodo DEFAULT: detecta se a ultima leitura passou do limite de alerta.
-     * Como usa apenas outros metodos do contrato, todas as classes ganham
-     * essa logica de graca, sem precisar reescrever.
+     * Metodo DEFAULT: detecta se a ultima leitura atingiu ou ultrapassou o
+     * limite de alerta. Como usa apenas outros metodos do contrato, todas as
+     * classes ganham essa logica de graca, sem precisar reescrever.
      */
     default boolean acimaDoLimite() {
-        return getUltimaLeitura() > getLimiteAlerta();
+        return getUltimaLeitura() >= getLimiteAlerta();
     }
 }
